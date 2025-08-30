@@ -10,6 +10,10 @@ import { Text, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 
+import {Divider} from "react-native-paper"
+import ButtonLight from '@/components/buttons/ButtonLight';
+import TextButton from '@/components/buttons/TextButton';
+
 
 export default function ImageUploadScreen() {
   return (
@@ -23,8 +27,22 @@ export default function ImageUploadScreen() {
           </ThemedText>
           <View style={styles.uploadContainer}>
             <Image source={require("../../assets/images/pictureIcon.png")} style={{width: 30, height: 30}}></Image>
-
+            <ThemedText weight="Light" style={{marginTop: 8}}>Select file</ThemedText>
           </View>
+          <View style={styles.divider}>
+            <ThemedText style={styles.dividerText}>or</ThemedText>
+          </View>
+          <ButtonLight onPress={()=>{}} style={{marginTop: 32, width: "100%"}}>
+            <ThemedText fontSize={16} weight="SemiBold" color="#001847">
+              Open Camera and Take Photo</ThemedText>
+          </ButtonLight>
+
+          <TextButton onPress={()=>{}} style={{marginTop: 100, alignSelf: "center", paddingVertical: 12, paddingHorizontal: 24}}>
+            <ThemedText color="#FFF" fontSize={18}>
+              Proceed to Scan
+            </ThemedText>
+          </TextButton>
+          
         </View>
     </SafeAreaView>
   );
@@ -32,7 +50,7 @@ export default function ImageUploadScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 40,
+    paddingTop: 70,
     paddingHorizontal: 20
   },
   uploadContainer: {
@@ -45,5 +63,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column"
+  },
+  divider: {
+    width: "100%",
+    borderBottomWidth: 1,
+    borderColor: Colors.colorText,
+    marginTop: 32
+    
+  },
+  dividerText: {
+    position: "absolute",
+    left: "50%",
+    bottom: 0,
+    transform: [{translateX: "-50%"}, {translateY: "50%"}],
+    backgroundColor: "#f2f2f2",
+    paddingHorizontal: 16
   }
 });
