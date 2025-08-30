@@ -6,7 +6,7 @@ import { Colors } from '@/constants/Colors';
 
 export type ThemedTextProps = TextProps & {
   color?: string
-  font?: "Montserrat" | "Roboto"
+  font?: "Montserrat" | "Roboto" | "Lobster"
   weight?: "Bold" | "SemiBold" | "Regular" | "Light"
   fontSize?: number
 };

@@ -19,6 +19,7 @@ export default function RootLayout() {
     RobotoSemiBold: require("../assets/fonts/Roboto-SemiBold.ttf"),
     RobotoRegular: require("../assets/fonts/Roboto-Regular.ttf"),
     RobotoLight: require("../assets/fonts/Roboto-Light.ttf"),
+    LobsterRegular: require("../assets/fonts/Lobster-Regular.ttf"),
   });
 
   if (!loaded) {

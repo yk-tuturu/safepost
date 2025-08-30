@@ -89,7 +89,7 @@ export default function ImageScanResult() {
             Let AI censor your image!
           </ThemedText>
         </TextButton>
-        <TextButton onPress={()=>{router.push("./imageUpload")}} style={{alignSelf: "center", marginTop: 16}}>
+        <TextButton onPress={()=>{router.push("./imageUpload")}} style={{alignSelf: "center", marginTop: 16, width: "80%"}}>
           <ThemedText color="#FFF" fontSize={18}>
             Scan another image
           </ThemedText>
