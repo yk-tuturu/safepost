@@ -84,7 +84,7 @@ export default function ImageScanResult() {
         </View>
         
         
-        <TextButton onPress={()=>{}} style={{alignSelf: "center", marginTop: 64}}>
+        <TextButton onPress={()=>{router.push("./imageFiltered")}} style={{alignSelf: "center", marginTop: 64}}>
           <ThemedText color="#FFF" fontSize={18}>
             Let AI censor your image!
           </ThemedText>

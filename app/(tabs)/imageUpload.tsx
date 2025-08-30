@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import {useState, useEffect} from "react";
 
 import { HelloWave } from '@/components/template/HelloWave';
@@ -22,12 +22,14 @@ import * as ImagePicker from 'expo-image-picker';
 import ResponsiveImage from '@/components/ResponsiveImage';
 
 import { useImage } from "../../context/ImageContext"
+import OutlineButton from '@/components/buttons/OutlineButton';
 
 export default function ImageUploadScreen() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const [image, setImage] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
 
   const { setImageUri } = useImage();
 
@@ -51,6 +53,8 @@ export default function ImageUploadScreen() {
       setLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000));
       router.push("./imageScanResult");
+    } else {
+      setError("Upload an image first!");
     }
   }
 
@@ -68,7 +72,16 @@ export default function ImageUploadScreen() {
     </View> : <></>}
 
     <SafeAreaView>
+        
         <View style={styles.container}>
+          {/* <TouchableOpacity onPress={()=>{router.push("./")}}>
+            <Image source={require("../../assets/images/close.png")} style={{width: 20, height: 20, marginBottom: 32}}/>
+          </TouchableOpacity> */}
+          <OutlineButton onPress={()=>{router.push("./")}} style={{paddingVertical: 4, marginBottom: 32}}>
+            <ThemedText color="#001847">
+              Back
+            </ThemedText>
+          </OutlineButton>
           <ThemedText fontSize={32} font="Montserrat" weight="Bold" color={Colors.colorPrimary}>
             Scan Your Image
           </ThemedText>
@@ -100,12 +113,16 @@ export default function ImageUploadScreen() {
             <ThemedText fontSize={16} weight="SemiBold" color="#001847">
               Open Camera and Take Photo</ThemedText>
           </ButtonLight>
-
-          <TextButton onPress={proceed} style={{marginTop: 100, alignSelf: "center", paddingVertical: 12, paddingHorizontal: 24}}>
+          
+          <ThemedText color="#ff0000" style={{alignSelf: "center", marginTop: 60}}>
+            {error}
+          </ThemedText>
+          <TextButton onPress={proceed} style={{marginTop: 8, alignSelf: "center", paddingVertical: 12, paddingHorizontal: 24}}>
             <ThemedText color="#FFF" fontSize={18}>
               Proceed to Scan
             </ThemedText>
           </TextButton>
+          
           
         </View>
     </SafeAreaView>
@@ -116,7 +133,7 @@ export default function ImageUploadScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 70,
+    paddingTop: 50,
     paddingHorizontal: 24
   },
   uploadContainer: {
