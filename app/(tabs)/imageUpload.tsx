@@ -20,6 +20,7 @@ import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
 import runObjectDetection from '@/executorch/ObjectDetection';
 import ocr from '@/executorch/ocr';
 import { useImage } from "../../context/ImageContext";
+import TextFlagging from '@/executorch/TextFlagging';
 
 export default function ImageUploadScreen() {
   // const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ export default function ImageUploadScreen() {
   // const [error, setError] = useState<string>("");
 
   const { addImage, clearData, imageUri } = useImage();
-  const { setDetected } = useObjectDetectionContext();
+  const { setDetected, setOcrDetected } = useObjectDetectionContext();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -54,7 +55,10 @@ export default function ImageUploadScreen() {
           const detected = await runObjectDetection(imageUri);
           const ocrResult = await ocr(imageUri);
           console.log("OCR Result:", ocrResult);
+          const imageDetected = ocrResult.length < 3 ? "" : await TextFlagging(ocrResult);
           setDetected(detected);
+          setOcrDetected(ocrResult);
+          console.log("Image Text Detection Result:", imageDetected);
           // You can also store OCR result somewhere if needed
         } catch (err) {
           console.error("Error in background tasks:", err);
@@ -65,7 +69,7 @@ export default function ImageUploadScreen() {
       Alert.alert('Please select an image to scan');
     }
 
-    
+
   }
 
   // clear off images from prev sessions
@@ -84,7 +88,7 @@ export default function ImageUploadScreen() {
 
       <SafeAreaView>
         <View style={styles.container}>
-          <OutlineButton onPress={()=>{router.back()}} style={{paddingVertical: 4, marginBottom: 10}}>
+          <OutlineButton onPress={() => { router.back() }} style={{ paddingVertical: 4, marginBottom: 10 }}>
             <ThemedText color="#001847">
               Back
             </ThemedText>

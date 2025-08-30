@@ -19,12 +19,12 @@ export default function ImageScanResult() {
 
   const { imageUri } = useImage();
 
-  const { detected, textResponse } = useObjectDetectionContext();
+  const { detected, ocrDetected, textResponse } = useObjectDetectionContext();
 
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <OutlineButton onPress={()=>{router.back()}} style={{paddingVertical: 4}}>
+        <OutlineButton onPress={() => { router.back() }} style={{ paddingVertical: 4 }}>
           <ThemedText color="#001847">
             Back
           </ThemedText>
@@ -40,6 +40,9 @@ export default function ImageScanResult() {
               <ThemedText color="#00AA00">No privacy risks detected</ThemedText>
             )}
           </ThemedText>
+          <ThemedText style={{ textAlign: "center", marginTop: 8 }} fontSize={16} weight="Light">
+            Text detected that may contain private information: {ocrDetected ? ocrDetected : "None"}
+          </ThemedText>
           {imageUri && <ResponsiveImage source={{ uri: imageUri }} style={{ marginTop: 28 }} />}
 
 
@@ -54,27 +57,27 @@ export default function ImageScanResult() {
               })
             }
           </View>
-          {textResponse ? 
+          {textResponse ?
             <TextButton onPress={() => { router.push("./textScanResult") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
-            <ThemedText color="#FFF" fontSize={18}>
-              View text scan result
-            </ThemedText>
-          </TextButton> : 
-          <>
-          <TextButton onPress={() => { router.push("./imageFiltered") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
-            <ThemedText color="#FFF" fontSize={18}>
-              Let AI refine your image!
-            </ThemedText>
-          </TextButton>
-          <TextButton onPress={() => { router.push("./imageUpload") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
-            <ThemedText color="#FFF" fontSize={18}>
-              Scan Another Image
-            </ThemedText>
-          </TextButton>
-          </>
-          
+              <ThemedText color="#FFF" fontSize={18}>
+                View text scan result
+              </ThemedText>
+            </TextButton> :
+            <>
+              <TextButton onPress={() => { router.push("./imageFiltered") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
+                <ThemedText color="#FFF" fontSize={18}>
+                  Let AI refine your image!
+                </ThemedText>
+              </TextButton>
+              <TextButton onPress={() => { router.push("./imageUpload") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
+                <ThemedText color="#FFF" fontSize={18}>
+                  Scan Another Image
+                </ThemedText>
+              </TextButton>
+            </>
+
           }
-          
+
         </ScrollView>
       </View>
     </SafeAreaView>
