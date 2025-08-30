@@ -6,6 +6,10 @@ import { useRouter } from 'expo-router';
 import { Button } from 'react-native';
 import ThemedText from '@/components/ui/ThemedText';
 
+import TextButton from '@/components/buttons/TextButton';
+import ButtonLight from '@/components/buttons/ButtonLight';
+import OutlineButton from '@/components/buttons/OutlineButton';
+
 import { Colors } from '@/constants/Colors';
 
 export default function HomeScreen() {
@@ -14,7 +18,19 @@ export default function HomeScreen() {
     <SafeAreaView>
       <Button title="go to image upload" onPress={() => router.push("./imageUpload")} />
       <Button title="go to text upload" onPress={() => router.push("./textUpload")} />
-        <ThemedText font="Montserrat" weight="Bold" fontSize={32} color={Colors.colorPrimary}>test</ThemedText>
+       <TextButton onPress={()=>{}}>
+        <ThemedText fontSize={20} font='Roboto' weight="Bold" color="white">Test test test</ThemedText>
+       </TextButton>
+       <ButtonLight onPress={()=>{}}>
+        <ThemedText fontSize={20} font="Roboto" weight="Bold" color="#001847">
+          hello testing wow
+        </ThemedText>
+       </ButtonLight>
+       <OutlineButton onPress={()=>{}}>
+        <ThemedText fontSize={20} font="Roboto" weight="Bold" color="#001847">
+          hello testing wow
+        </ThemedText>
+       </OutlineButton>
     </SafeAreaView>
   );
 }

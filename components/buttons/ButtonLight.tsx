@@ -5,7 +5,7 @@ import ThemedText from "../ui/ThemedText";
 
 import { Colors } from "@/constants/Colors";
 
-export type TextButtonProps = {
+export type ButtonLightProps = {
   children?: React.ReactNode,
   style?: ViewStyle | ViewStyle[],
   onPress: ()=>void,
@@ -14,14 +14,14 @@ export type TextButtonProps = {
 
 // pass in your own children as a prop
 // caveat is tho, you have to style your own children text
-const TextButton: React.FC<TextButtonProps> = ({
+const ButtonLight: React.FC<ButtonLightProps> = ({
     onPress,
     children,
     style
 }) => {
     const styles = StyleSheet.create({
         button: {
-            backgroundColor: Colors.colorPrimary,
+            backgroundColor: "#A5CEFF",
             paddingVertical: 10,
             paddingHorizontal: 20,
             borderRadius: 20,
@@ -32,7 +32,10 @@ const TextButton: React.FC<TextButtonProps> = ({
             elevation: 8, // Android
             alignSelf: "flex-start",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            borderColor: Colors.colorPrimary,
+            borderWidth: 1,
+            borderStyle: "solid"
         }
         });
 
@@ -43,5 +46,5 @@ const TextButton: React.FC<TextButtonProps> = ({
   );
 }
 
-export default TextButton;
+export default ButtonLight;
 
