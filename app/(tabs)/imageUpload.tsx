@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '@/constants/Colors';
 
 import ButtonLight from '@/components/buttons/ButtonLight';
+import OutlineButton from '@/components/buttons/OutlineButton';
 import TextButton from '@/components/buttons/TextButton';
 
 import LoadingScreen from '@/components/LoadingScreen';
