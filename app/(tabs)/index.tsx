@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { LinearGradient } from 'expo-linear-gradient'
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,7 +12,7 @@ export default function HomeScreen() {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <View style={styles.safeArea}>
       <LinearGradient colors={['#0172B2', '#001645']} style={styles.gradient}>
         <ThemedText color='white' font='Lobster' fontSize={45} weight='Regular' style={styles.appHeader}>Safe Post</ThemedText>
         <ThemedText color='white' font='Roboto' fontSize={20} weight='Regular' style={styles.appSlogan}>Share Freely. Post Safely.</ThemedText>
@@ -25,7 +25,7 @@ export default function HomeScreen() {
           <ThemedText color='#484242' font='Roboto' fontSize={15} weight='Regular' style={styles.scanDetail}>Detect faces, documents, and private details in your photos.</ThemedText>
         </ButtonLight>
       </LinearGradient>
-    </SafeAreaView>
+    </View>
   );
 }
 
