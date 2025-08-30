@@ -1,16 +1,16 @@
-import { StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import ThemedText from '@/components/ui/ThemedText';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Colors } from '@/constants/Colors';
 import TextButton from '@/components/buttons/TextButton';
+import { Colors } from '@/constants/Colors';
 
-import { useRouter } from 'expo-router';
-import { useImage } from '@/context/ImageContext';
 import ResponsiveImage from '@/components/ResponsiveImage';
+import { useImage } from '@/context/ImageContext';
 import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
+import { useRouter } from 'expo-router';
 
 
 export default function ImageScanResult() {
@@ -43,9 +43,9 @@ export default function ImageScanResult() {
             })
           }
         </View>
-
-
-        <TextButton onPress={() => { }} style={{ alignSelf: "center", marginTop: 64, width: "80%" }}>
+        
+        
+        <TextButton onPress={()=>{router.push("./imageFiltered")}} style={{alignSelf: "center", marginTop: 64}}>
           <ThemedText color="#FFF" fontSize={18}>
             Let AI censor your image!
           </ThemedText>

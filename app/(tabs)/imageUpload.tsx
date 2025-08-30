@@ -1,21 +1,22 @@
 import { Image } from 'expo-image';
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet } from 'react-native';
-import { useState, useEffect } from "react";
 
 import ThemedText from '@/components/ui/ThemedText';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Colors } from '@/constants/Colors';
 
 import ButtonLight from '@/components/buttons/ButtonLight';
+import OutlineButton from '@/components/buttons/OutlineButton';
 import TextButton from '@/components/buttons/TextButton';
 
 import LoadingScreen from '@/components/LoadingScreen';
 
-import { useRouter } from 'expo-router';
-import * as ImagePicker from 'expo-image-picker';
 import ResponsiveImage from '@/components/ResponsiveImage';
+import * as ImagePicker from 'expo-image-picker';
+import { useRouter } from 'expo-router';
 
 import { useImage } from "../../context/ImageContext"
 import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
@@ -27,6 +28,7 @@ export default function ImageUploadScreen() {
   const router = useRouter();
 
   const [image, setImage] = useState<string | null>(null);
+  const [error, setError] = useState<string>("");
 
   const { setImageUri, imageUri } = useImage();
   const { setDetected } = useObjectDetectionContext();
@@ -34,8 +36,8 @@ export default function ImageUploadScreen() {
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images', 'videos'],
-      quality: 0.5,
+      mediaTypes: ['images'],
+      quality: 0.95,
     });
 
     console.log(result);
@@ -55,6 +57,8 @@ export default function ImageUploadScreen() {
       setDetected(detected);
       setLoading(false);
       router.push("./imageScanResult");
+    } else {
+      setError("Upload an image first!");
     }
   }
 
@@ -73,6 +77,11 @@ export default function ImageUploadScreen() {
 
       <SafeAreaView>
         <View style={styles.container}>
+          <OutlineButton onPress={()=>{router.push("./")}} style={{paddingVertical: 4, marginBottom: 32}}>
+            <ThemedText color="#001847">
+              Back
+            </ThemedText>
+          </OutlineButton>
           <ThemedText fontSize={32} font="Montserrat" weight="Bold" color={Colors.colorPrimary}>
             Scan Your Image
           </ThemedText>
@@ -122,7 +131,7 @@ export default function ImageUploadScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 70,
+    paddingTop: 50,
     paddingHorizontal: 24
   },
   uploadContainer: {

@@ -36,6 +36,7 @@ const ResponsiveImage: React.FC<ResponsiveImageProps> = ({ source, style, maxWid
           aspectRatio,
           maxHeight: maxHeight,
           resizeMode: "contain",
+          alignSelf: "center"
         },
         style,
       ]}
