@@ -8,12 +8,15 @@ import ResponsiveImage from '@/components/ResponsiveImage';
 import { Colors } from '@/constants/Colors';
 
 import { useImage } from '@/context/ImageContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Checkbox } from 'react-native-paper';
 
 import { useRouter } from 'expo-router';
 
 import TextButton from '@/components/buttons/TextButton';
+import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
+import { Rect, Svg } from 'react-native-svg';
+
 
 type Flag = {
   key: string,
@@ -24,23 +27,36 @@ type Flag = {
 export default function ImageFiltered() {
   const {imageUri} = useImage();
 
-  const [flags, setFlags] = useState<Flag[]>([
-    {
-      key: "Car license plate",
-      desc: "some desc",
-      checked: true
-    },
-    {
-      key: "Car license plate 2",
-      desc: "some desc",
-      checked: true
-    },
-    {
-      key: "Car license plate 3",
-      desc: "some desc",
-      checked: true
-    },
-  ])
+  const [flags, setFlags] = useState<Flag[]>([])
+
+  const { detected } = useObjectDetectionContext();
+  console.log(detected);
+
+  useEffect(()=> {
+
+  }, [])
+
+  // const saveImage = async () => {
+  //   if (!image) return;
+
+  //   try {
+  //     const uri = await captureRef(viewRef, {
+  //       format: 'png',
+  //       quality: 1,
+  //     });
+
+  //     const { status } = await MediaLibrary.requestPermissionsAsync();
+  //     if (status === 'granted') {
+  //       await MediaLibrary.saveToLibraryAsync(uri);
+  //       Alert.alert('Success', 'Saved to gallery!');
+  //     } else {
+  //       Alert.alert('Error', 'Permission denied');
+  //     }
+  //   } catch (err) {
+  //     console.error(err);
+  //     Alert.alert('Error', 'Something went wrong.');
+  //   }
+  // };
 
   const router = useRouter();
 
@@ -57,11 +73,31 @@ export default function ImageFiltered() {
           <ThemedText weight="SemiBold" fontSize={18} style={{marginTop: 32, alignSelf: "center"}}>
             Original Image
           </ThemedText>
-          {imageUri && <ResponsiveImage 
-                source={{uri: imageUri}} 
-                maxHeight={350}
-                style={{marginTop: 16}}>
-          </ResponsiveImage>}
+          {imageUri && <View>
+              <ResponsiveImage 
+                  source={{uri: imageUri}} 
+                  maxHeight={350}
+                  style={{marginTop: 16}}>
+            </ResponsiveImage>
+            <Svg style={StyleSheet.absoluteFill}>
+              {
+                detected.map((flag, index) => {
+                  return <Rect
+                    key={index}
+                    x={flag.bbox.x1}
+                    y={flag.bbox.y1}
+                    width={flag.bbox.x2 - flag.bbox.x1}
+                    height={flag.bbox.y2 - flag.bbox.y1}
+                    stroke="red"
+                    strokeWidth={3}
+                    fill="transparent"
+                  />
+                })
+              }
+              
+            </Svg>
+          </View>
+          }
           <View style={styles.flagWrapper}>
             {
               flags.map((flag, index)=> {

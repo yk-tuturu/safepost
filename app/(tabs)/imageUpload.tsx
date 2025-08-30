@@ -35,8 +35,8 @@ export default function ImageUploadScreen() {
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images', 'videos'],
-      quality: 1,
+      mediaTypes: ['images'],
+      quality: 0.95,
     });
 
     console.log(result);
@@ -74,9 +74,6 @@ export default function ImageUploadScreen() {
 
       <SafeAreaView>
         <View style={styles.container}>
-          {/* <TouchableOpacity onPress={()=>{router.push("./")}}>
-            <Image source={require("../../assets/images/close.png")} style={{width: 20, height: 20, marginBottom: 32}}/>
-          </TouchableOpacity> */}
           <OutlineButton onPress={()=>{router.push("./")}} style={{paddingVertical: 4, marginBottom: 32}}>
             <ThemedText color="#001847">
               Back
