@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 
+import OutlineButton from '@/components/buttons/OutlineButton';
 import ThemedText from '@/components/ui/ThemedText';
 import TextButton from '@/components/buttons/TextButton';
 import { Colors } from '@/constants/Colors';
@@ -72,60 +73,67 @@ export default function TextResultScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView style={styles.container}>
-        <ThemedText fontSize={32} font="Montserrat" weight="Bold" color={Colors.colorPrimary}>
-          Privacy Scan Result
-        </ThemedText>
-        
-        {scanResult.hasRisks ? (
-          <ThemedText fontSize={18} weight="Regular" color="red" style={styles.subtitle}>
-            Potential privacy risks detected.
+      <View style={styles.container}>
+        <OutlineButton onPress={()=>{router.back()}} style={{paddingVertical: 4}}>
+          <ThemedText color="#001847">
+            Back
           </ThemedText>
-        ) : (
-          <ThemedText fontSize={18} weight="Regular" color="green" style={styles.subtitle}>
-            No privacy risks detected. Your text appears safe to share.
+        </OutlineButton>
+        <ScrollView style={styles.container}>
+          <ThemedText fontSize={25} font="Montserrat" weight="Bold" color={Colors.colorPrimary} style={{ textAlign: "center" }}>
+            Text Privacy Scan Result
           </ThemedText>
-        )}
+          
+          {scanResult.hasRisks ? (
+            <ThemedText fontSize={18} weight="Regular" color="red" style={styles.subtitle}>
+              Potential privacy risks detected.
+            </ThemedText>
+          ) : (
+            <ThemedText fontSize={18} weight="Regular" color="green" style={styles.subtitle}>
+              No privacy risks detected. Your text appears safe to share.
+            </ThemedText>
+          )}
 
-        <View style={styles.originalTextDisplay}>
-          <View style={styles.textContent}>
-            {renderHighlightedText()}
+          <View style={styles.originalTextDisplay}>
+            <View style={styles.textContent}>
+              {renderHighlightedText()}
+            </View>
           </View>
-        </View>
 
-        {scanResult.hasRisks && (
-          <View style={styles.risksContainer}>
-            <ThemedText fontSize={20} weight="Bold" color={Colors.colorPrimary} style={styles.risksTitle}>
-              Risks Detected:
-            </ThemedText>
-            
-            {scanResult.risks.map((risk, index) => (
-              <View key={index} style={styles.riskItem}>
-                <ThemedText fontSize={16} weight="Bold" color="red">
-                  {risk.phrase}:
-                </ThemedText>
-                <ThemedText fontSize={14} weight="Regular" color="black" style={styles.riskDetail}>
-                  {risk.detail}
-                </ThemedText>
-              </View>
-            ))}
+          {scanResult.hasRisks && (
+            <View style={styles.risksContainer}>
+              <ThemedText fontSize={20} weight="Bold" color={Colors.colorPrimary} style={styles.risksTitle}>
+                Risks Detected:
+              </ThemedText>
+              
+              {scanResult.risks.map((risk, index) => (
+                <View key={index} style={styles.riskItem}>
+                  <ThemedText fontSize={16} weight="Bold" color="red">
+                    {risk.phrase}:
+                  </ThemedText>
+                  <ThemedText fontSize={14} weight="Regular" color="black" style={styles.riskDetail}>
+                    {risk.detail}
+                  </ThemedText>
+                </View>
+              ))}
+            </View>
+          )}
+
+          <View style={styles.buttonContainer}>
+            <TextButton onPress={handleAIRefine} style={styles.refineButton}>
+              <ThemedText fontSize={16} weight="Bold" color="white">
+                Let AI Refine Your Text
+              </ThemedText>
+            </TextButton>
+
+            <TextButton onPress={() => router.push("./imageUpload")} style={styles.scanButton}>
+              <ThemedText fontSize={16} weight="Bold" color="white">
+                Scan Again
+              </ThemedText>
+            </TextButton>
           </View>
-        )}
-
-        <View style={styles.buttonContainer}>
-          <TextButton onPress={handleAIRefine} style={styles.refineButton}>
-            <ThemedText fontSize={16} weight="Bold" color="white">
-              Let AI Refine Your Text
-            </ThemedText>
-          </TextButton>
-
-          <TextButton onPress={() => router.back()} style={styles.scanButton}>
-            <ThemedText fontSize={16} weight="Bold" color="white">
-              Scan Another Text
-            </ThemedText>
-          </TextButton>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -172,6 +180,7 @@ const styles = StyleSheet.create({
   riskDetail: {
     marginTop: 4,
     lineHeight: 20,
+    textAlign: 'justify',
   },
   buttonContainer: {
     flexDirection: 'column',
@@ -180,12 +189,12 @@ const styles = StyleSheet.create({
   },
   refineButton: {
     alignSelf: 'center',
-    width: '60%',
+    width: '70%',
     paddingVertical: 16,
   },
   scanButton: {
     alignSelf: 'center',
-    width: '60%',
+    width: '70%',
     paddingVertical: 16,
     backgroundColor: "#669bbc",
   },

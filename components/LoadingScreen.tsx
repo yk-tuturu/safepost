@@ -28,11 +28,6 @@ export default function LoadingScreen() {
             Cancel
           </ThemedText>
         </OutlineButton>
-        <OutlineButton onPress={()=>{router.push("./imageScanResult")}} style={{alignSelf: "center"}}>
-          <ThemedText color="#001847">
-            (Debug) Next
-          </ThemedText>
-        </OutlineButton>
     </SafeAreaView>
   );
 }

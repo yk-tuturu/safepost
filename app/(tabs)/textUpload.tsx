@@ -1,16 +1,17 @@
-import { StyleSheet, Alert } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 
 import ThemedText from '@/components/ui/ThemedText';
+import { TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, TextInput } from 'react-native';
 
+import LoadingScreen from '@/components/LoadingScreen';
+import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import * as Clipboard from 'expo-clipboard';
-import LoadingScreen from '@/components/LoadingScreen';
 
-import { Colors } from '@/constants/Colors';
+import OutlineButton from '@/components/buttons/OutlineButton';
 import TextButton from '@/components/buttons/TextButton';
+import { Colors } from '@/constants/Colors';
 import TextFlagging from '@/executorch/TextFlagging';
 
 export default function TextUploadScreen() {
@@ -43,7 +44,7 @@ export default function TextUploadScreen() {
       console.log("Proceeding to scan text: ", textInput);
       const res = await TextFlagging(textInput);
       console.log("Text Flagging Result: ", res);
-      router.push('./textScanResult');
+      router.push('./imageScanResult');
       setIsLoading(false);
     }
   };
@@ -56,6 +57,11 @@ export default function TextUploadScreen() {
         </View> : <></>}
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
+          <OutlineButton onPress={()=>{router.back()}} style={{paddingVertical: 4}}>
+            <ThemedText color="#001847">
+              Back
+            </ThemedText>
+          </OutlineButton>
           <ThemedText fontSize={32} font="Montserrat" weight="Bold" color={Colors.colorPrimary}>
             Scan Your Text
           </ThemedText>
