@@ -18,9 +18,9 @@ import * as ImagePicker from 'expo-image-picker';
 import ResponsiveImage from '@/components/ResponsiveImage';
 
 import { useImage } from "../../context/ImageContext"
-import runObjectDetection from './ExecutorchTest';
-import { Detection } from 'react-native-executorch';
 import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
+import runObjectDetection from '@/executorch/ObjectDetection';
+import ocr from '@/executorch/ocr';
 
 export default function ImageUploadScreen() {
   const [loading, setLoading] = useState(false);
@@ -29,13 +29,13 @@ export default function ImageUploadScreen() {
   const [image, setImage] = useState<string | null>(null);
 
   const { setImageUri, imageUri } = useImage();
-  const { detected, setDetected } = useObjectDetectionContext();
+  const { setDetected } = useObjectDetectionContext();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images', 'videos'],
-      quality: 1,
+      quality: 0.5,
     });
 
     console.log(result);
@@ -50,6 +50,8 @@ export default function ImageUploadScreen() {
     if (imageUri && !loading) {
       setLoading(true);
       const detected = await runObjectDetection(imageUri);
+      const test = await ocr(imageUri);
+      console.log("OCR Result: ", test);
       setDetected(detected);
       setLoading(false);
       router.push("./imageScanResult");

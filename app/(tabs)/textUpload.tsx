@@ -1,4 +1,4 @@
-import { StyleSheet, Alert} from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 
 import ThemedText from '@/components/ui/ThemedText';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,6 +11,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 
 import { Colors } from '@/constants/Colors';
 import TextButton from '@/components/buttons/TextButton';
+import TextFlagging from '@/executorch/TextFlagging';
 
 export default function TextUploadScreen() {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +32,7 @@ export default function TextUploadScreen() {
   };
 
   // If not text input, do not allow to proceed
-  const handleProceedToScan = async() => {
+  const handleProceedToScan = async () => {
     if (textInput.trim() === '') {
       Alert.alert('Please enter text to scan');
       return;
@@ -39,7 +40,9 @@ export default function TextUploadScreen() {
 
     if (!isLoading) {
       setIsLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      console.log("Proceeding to scan text: ", textInput);
+      const res = await TextFlagging(textInput);
+      console.log("Text Flagging Result: ", res);
       router.push('./textScanResult');
       setIsLoading(false);
     }
@@ -47,8 +50,8 @@ export default function TextUploadScreen() {
 
   return (
     <>
-      {isLoading ? 
-        <View style={{zIndex: 5, backgroundColor: "#f2f2f2", ...StyleSheet.absoluteFillObject}}>
+      {isLoading ?
+        <View style={{ zIndex: 5, backgroundColor: "#f2f2f2", ...StyleSheet.absoluteFillObject }}>
           <LoadingScreen></LoadingScreen>
         </View> : <></>}
       <SafeAreaView style={styles.safeArea}>
@@ -59,7 +62,7 @@ export default function TextUploadScreen() {
           <ThemedText fontSize={18} weight="Light" style={styles.subtitle}>
             Check your captions and text for any sensitive or private information.
           </ThemedText>
-          
+
           <TextButton style={styles.pasteButton} onPress={handlePasteFromClipboard}>
             <ThemedText fontSize={16} weight="Bold" color="white">
               Paste from Clipboard
