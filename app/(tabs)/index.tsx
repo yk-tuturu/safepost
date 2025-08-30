@@ -15,6 +15,7 @@ import { Colors } from '@/constants/Colors';
 
 export default function HomeScreen() {
   const router = useRouter();
+  
   return (
       <SafeAreaView style={styles.safeArea}>
         <LinearGradient colors={['#0172B2', '#001645']} style={styles.gradient}>

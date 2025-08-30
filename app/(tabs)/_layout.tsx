@@ -3,12 +3,14 @@ import React from 'react';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 import {Stack} from 'expo-router';
+import { ImageProvider } from '@/context/ImageContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Stack>
+    <ImageProvider>
+      <Stack>
         <Stack.Screen name="index" options={{headerShown: false}} />
         <Stack.Screen name="imageUpload" options={{headerShown: false}} />
         <Stack.Screen name="imageScanResult" options={{headerShown: false}} />
@@ -17,5 +19,7 @@ export default function TabLayout() {
         <Stack.Screen name="textScanResult" options={{headerShown: false}} />
         <Stack.Screen name="textFiltered" options={{headerShown: false}} />
     </Stack>
+    </ImageProvider>
+    
   );
 }
