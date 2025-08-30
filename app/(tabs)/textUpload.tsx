@@ -1,18 +1,18 @@
-import { StyleSheet, Alert } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 
 import ThemedText from '@/components/ui/ThemedText';
+import { TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, TextInput } from 'react-native';
 
+import LoadingScreen from '@/components/LoadingScreen';
+import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import * as Clipboard from 'expo-clipboard';
-import LoadingScreen from '@/components/LoadingScreen';
 
-import { Colors } from '@/constants/Colors';
-import TextButton from '@/components/buttons/TextButton';
-import TextFlagging from '@/executorch/TextFlagging';
 import OutlineButton from '@/components/buttons/OutlineButton';
+import TextButton from '@/components/buttons/TextButton';
+import { Colors } from '@/constants/Colors';
+import TextFlagging from '@/executorch/TextFlagging';
 
 export default function TextUploadScreen() {
   const [isLoading, setIsLoading] = useState(false);
