@@ -22,11 +22,11 @@ function ThemedText({
 
   return (
     <Text
-      style={{
+      style={[{
         fontSize: fontSize,
         color: color,
-        fontFamily: font + weight,
-      }}
+        fontFamily: font + weight
+      }, style]}
       {...rest}
     />
   );
