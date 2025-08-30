@@ -10,6 +10,9 @@ import { Text, View } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 import {useState } from "react";
+import TextButton from '@/components/buttons/TextButton';
+
+import { useRouter } from 'expo-router';
 
 type Flag = {
   key: string, 
@@ -22,6 +25,8 @@ const screenWidth = Dimensions.get("window").width;
 export default function ImageScanResult() {
   const imageWidth = screenWidth - 24 * 2;
   const maxHeight = 300;
+
+  const router = useRouter();
 
   const [flags, setFlags] = useState<Flag[]>([
     {
@@ -41,17 +46,27 @@ export default function ImageScanResult() {
         <Image source={require("../../assets/images/privacyTestImage.png")}
           style={{width: "100%", maxHeight: 200, height: "50%"}}
         ></Image>
-        <View>
+        <View style={{marginTop: 16}}>
           {
             flags.map((flag, index)=> {
               return <View key={index}>
                 <ThemedText>
-                  <ThemedText color="#FF0000">{flag.key}</ThemedText><ThemedText>:{flag.desc}</ThemedText>
+                  <ThemedText color="#FF0000">{flag.key}: </ThemedText><ThemedText>{flag.desc}</ThemedText>
                 </ThemedText>
               </View>
             })
           }
         </View>
+        <TextButton onPress={()=>{}} style={{alignSelf: "center", marginTop: 64}}>
+          <ThemedText color="#FFF" fontSize={18}>
+            Let AI censor your image!
+          </ThemedText>
+        </TextButton>
+        <TextButton onPress={()=>{router.push("./imageUpload")}} style={{alignSelf: "center", marginTop: 16}}>
+          <ThemedText color="#FFF" fontSize={18}>
+            Scan another image
+          </ThemedText>
+        </TextButton>
     </SafeAreaView>
   );
 }
