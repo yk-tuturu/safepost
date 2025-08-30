@@ -19,7 +19,7 @@ export default function ImageScanResult() {
 
   const { imageUri } = useImage();
 
-  const { detected } = useObjectDetectionContext();
+  const { detected, textResponse } = useObjectDetectionContext();
 
   return (
     <SafeAreaView>
@@ -34,7 +34,7 @@ export default function ImageScanResult() {
             Image Privacy Scan Results
           </ThemedText>
           <ThemedText style={{ textAlign: "center", marginTop: 15 }}>
-            {detected.length > 0 ? (
+            {detected && detected.length > 0 ? (
               <ThemedText color="#FF0000">Potential privacy risks detected</ThemedText>
             ) : (
               <ThemedText color="#00AA00">No privacy risks detected</ThemedText>
@@ -45,7 +45,7 @@ export default function ImageScanResult() {
 
           <View style={{ marginTop: 16 }}>
             {
-              detected.map((detected, index) => {
+              detected && detected.map((detected, index) => {
                 return <View key={index} style={{ marginBottom: 16 }}>
                   <ThemedText>
                     <ThemedText color="#FF0000">{detected.label}: </ThemedText><ThemedText>{detected.score}</ThemedText>
@@ -54,12 +54,27 @@ export default function ImageScanResult() {
               })
             }
           </View>
-          
-          <TextButton onPress={() => { router.push("./textScanResult") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
+          {textResponse ? 
+            <TextButton onPress={() => { router.push("./textScanResult") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
             <ThemedText color="#FFF" fontSize={18}>
               View text scan result
             </ThemedText>
+          </TextButton> : 
+          <>
+          <TextButton onPress={() => { router.push("./imageFiltered") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
+            <ThemedText color="#FFF" fontSize={18}>
+              Let AI refine your image!
+            </ThemedText>
           </TextButton>
+          <TextButton onPress={() => { router.push("./imageUpload") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
+            <ThemedText color="#FFF" fontSize={18}>
+              Scan Another Image
+            </ThemedText>
+          </TextButton>
+          </>
+          
+          }
+          
         </ScrollView>
       </View>
     </SafeAreaView>

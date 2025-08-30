@@ -7,17 +7,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import LoadingScreen from '@/components/LoadingScreen';
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import OutlineButton from '@/components/buttons/OutlineButton';
 import TextButton from '@/components/buttons/TextButton';
 import { Colors } from '@/constants/Colors';
 import TextFlagging from '@/executorch/TextFlagging';
 
+import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
+
 export default function TextUploadScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const [textInput, setTextInput] = useState('');
+
+  const {detected} = useObjectDetectionContext();
+  const [skipped, setSkipped] = useState(false);
+  const [textDetected, setTextDetected] = useState(false);
 
   const handlePasteFromClipboard = async () => {
     try {
@@ -44,10 +50,32 @@ export default function TextUploadScreen() {
       console.log("Proceeding to scan text: ", textInput);
       const res = await TextFlagging(textInput);
       console.log("Text Flagging Result: ", res);
-      router.push('./imageScanResult');
-      setIsLoading(false);
+      setTextDetected(true);
     }
   };
+
+  // flawless
+  // absolutely not spaghetti at all
+  function handleSkip() {
+    if (detected) {
+      router.push("./imageScanResult");
+    } else {
+      setSkipped(true);
+      setIsLoading(true);
+    }
+  }
+
+  useEffect(()=> {
+    if (skipped && detected) {
+      router.push("./imageScanResult");
+    }
+
+    if (!skipped && detected && textDetected) {
+      router.push("./imageScanResult")
+    }
+  }, [skipped, detected])
+
+
 
   return (
     <>
@@ -94,6 +122,11 @@ export default function TextUploadScreen() {
               Proceed to Scan
             </ThemedText>
           </TextButton>
+          <OutlineButton onPress={handleSkip} style={{alignSelf: "center", marginTop: 16}}>
+            <ThemedText color="#001847">
+              Skip
+            </ThemedText>
+          </OutlineButton>
         </View>
       </SafeAreaView>
     </>

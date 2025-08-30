@@ -140,7 +140,7 @@ export default function ImageFiltered() {
             </ResponsiveImage>
             <Svg style={StyleSheet.absoluteFill}>
               {
-                detected.map((flag, index) => {
+                detected && detected.map((flag, index) => {
                   return <Rect
                     key={index}
                     x={flag.bbox.x1 / width * renderedSize.width}

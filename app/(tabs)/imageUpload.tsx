@@ -3,16 +3,14 @@ import { useEffect, useState } from "react";
 import { Pressable, StyleSheet } from 'react-native';
 
 import ThemedText from '@/components/ui/ThemedText';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Alert } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 
 import ButtonLight from '@/components/buttons/ButtonLight';
 import OutlineButton from '@/components/buttons/OutlineButton';
 import TextButton from '@/components/buttons/TextButton';
-import LoadingScreen from '@/components/LoadingScreen';
 
 import ResponsiveImage from '@/components/ResponsiveImage';
 import * as ImagePicker from 'expo-image-picker';
@@ -50,21 +48,30 @@ export default function ImageUploadScreen() {
 
   const proceed = async () => {
     if (imageUri) {
-      // setLoading(true);
-      const detected = await runObjectDetection(imageUri);
-      const test = await ocr(imageUri);
-      console.log("OCR Result: ", test);
-      setDetected(detected);
-      // setLoading(false);
+      // Fire off async tasks without awaiting
+      (async () => {
+        try {
+          const detected = await runObjectDetection(imageUri);
+          const ocrResult = await ocr(imageUri);
+          console.log("OCR Result:", ocrResult);
+          setDetected(detected);
+          // You can also store OCR result somewhere if needed
+        } catch (err) {
+          console.error("Error in background tasks:", err);
+        }
+      })();
       router.push("./textUpload");
     } else {
       Alert.alert('Please select an image to scan');
     }
+
+    
   }
 
   // clear off images from prev sessions
   useEffect(() => {
     clearData();
+    setDetected(null);
   }, [])
 
 
