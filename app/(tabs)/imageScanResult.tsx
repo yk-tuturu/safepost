@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet, Dimensions } from 'react-native';
+import { Platform, StyleSheet, Dimensions, ScrollView } from 'react-native';
 
 import { HelloWave } from '@/components/template/HelloWave';
 import ParallaxScrollView from '@/components/template/ParallaxScrollView';
@@ -13,6 +13,8 @@ import {useState } from "react";
 import TextButton from '@/components/buttons/TextButton';
 
 import { useRouter } from 'expo-router';
+import { useImage } from '@/context/ImageContext';
+import ResponsiveImage from '@/components/ResponsiveImage';
 
 type Flag = {
   key: string, 
@@ -32,24 +34,47 @@ export default function ImageScanResult() {
     {
       key: "Car license plate",
       desc: "A license plate can be used to identify a vehicle's owner, potentially exposing personal information"
-    }
+    },
+    {
+      key: "Car license plate",
+      desc: "A license plate can be used to identify a vehicle's owner, potentially exposing personal information"
+    },
+    {
+      key: "Car license plate",
+      desc: "A license plate can be used to identify a vehicle's owner, potentially exposing personal information"
+    },
+    {
+      key: "Car license plate",
+      desc: "A license plate can be used to identify a vehicle's owner, potentially exposing personal information"
+    },
+    {
+      key: "Car license plate",
+      desc: "A license plate can be used to identify a vehicle's owner, potentially exposing personal information"
+    },
+    {
+      key: "Car license plate",
+      desc: "A license plate can be used to identify a vehicle's owner, potentially exposing personal information"
+    },
   ])
 
+  const {imageUri } = useImage();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.container}>
         <ThemedText style={{textAlign: "center"}} color={Colors.colorPrimary} font="Montserrat" fontSize={32} weight="Bold">
           Privacy Scan Results
         </ThemedText>
         <ThemedText style={{textAlign: "center"}}>
           Potential privacy risks detected
         </ThemedText>
-        <Image source={require("../../assets/images/privacyTestImage.png")}
-          style={{width: "100%", maxHeight: 200, height: "50%"}}
-        ></Image>
-        <View style={{marginTop: 16}}>
+        { imageUri && <ResponsiveImage source={{uri: imageUri}} style={{marginTop: 32}}/>}
+        
+        
+          <View style={{marginTop: 16}}>
           {
             flags.map((flag, index)=> {
-              return <View key={index}>
+              return <View key={index} style={{marginBottom: 16}}>
                 <ThemedText>
                   <ThemedText color="#FF0000">{flag.key}: </ThemedText><ThemedText>{flag.desc}</ThemedText>
                 </ThemedText>
@@ -57,6 +82,8 @@ export default function ImageScanResult() {
             })
           }
         </View>
+        
+        
         <TextButton onPress={()=>{}} style={{alignSelf: "center", marginTop: 64}}>
           <ThemedText color="#FFF" fontSize={18}>
             Let AI censor your image!
@@ -67,6 +94,7 @@ export default function ImageScanResult() {
             Scan another image
           </ThemedText>
         </TextButton>
+        </ScrollView>
     </SafeAreaView>
   );
 }
