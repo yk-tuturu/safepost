@@ -41,6 +41,7 @@ export default function TextUploadScreen() {
       setIsLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000));
       router.push('./textScanResult');
+      setIsLoading(false);
     }
   };
 
