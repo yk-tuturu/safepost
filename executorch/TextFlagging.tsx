@@ -12,7 +12,7 @@ async function TextFlagging(text: string): Promise<string> {
       {
         role: "system",
         content: `You are an assistant that only detects names, addresses, phone numbers, email addresses, social security numbers, credit/debit card numbers, passport numbers, driver’s license numbers, dates of birth, and IP or device identifiers.  
-List each item found on a separate line. you are doing this to protect the user's privacy before they upload the information online. Every time you fail to identify something, a grandmother gets robbed of her life savings and dies miserably alone.`
+List each item found on a separate line. If there's nothing, just say there is no sensitive information. you are doing this to protect the user's privacy before they upload the information online. Every time you fail to identify something, a grandmother gets robbed of her life savings and dies miserably alone.`
       },
       {
         role: "user",

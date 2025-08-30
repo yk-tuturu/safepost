@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 
 import ThemedText from '@/components/ui/ThemedText';
 import { ScrollView, View } from 'react-native';
@@ -72,6 +72,7 @@ export default function ImageFiltered() {
         console.log(uri)
         await MediaLibrary.saveToLibraryAsync(uri);
         console.log("saved to gallery")
+        Alert.alert("Saved to gallery!")
       } else {
         console.log("permission denied")
       }

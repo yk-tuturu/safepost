@@ -8,63 +8,34 @@ import ThemedText from '@/components/ui/ThemedText';
 import TextButton from '@/components/buttons/TextButton';
 import { Colors } from '@/constants/Colors';
 
-// Replace with actual detection later
-const scanResultData = {
-  hasRisks: true,
-  originalText: "Hey everyone! I'll be traveling to Bali from October 15 to 22, staying at Ayodya Resort. My flight is SQ123 departing from Singapore. Can't wait to share photos!",
-  flaggedPhrases: [
-    { text: "October 15 to 22" },
-    { text: "Bali" },
-    { text: "Ayodya Resort" },
-    { text: "SQ123" },
-    { text: "Singapore" }
-  ],
-  risks: [
-    {
-      phrase: "October 15 to 22",
-      detail: "You've announced you will be away from home on a specific date range. This tells potential burglars that your home will be empty, making it an easy target."
-    },
-    {
-      phrase: "Bali, Ayodya Resort",
-      detail: "You've shared your destination and the hotel in your trip, which helps anyone tracking you to narrow down your location."
-    },
-    {
-      phrase: "Flight number SQ123",
-      detail: "You've provided your flight number, which could be used to track your exact travel schedule."
-    },
-    {
-      phrase: "Singapore",
-      detail: "You've mentioned you are leaving Singapore, which confirms your starting location and indicates your absence from home."
-    }
-  ]
-};
+import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
 
 export default function TextResultScreen() {
   const router = useRouter();
-  const [scanResult] = useState(scanResultData);
+  const { textResponse, ocrDetected } = useObjectDetectionContext();
 
-  const renderHighlightedText = () => {
-    const { originalText, flaggedPhrases } = scanResult;
+  // const renderHighlightedText = () => {
+  //   const { originalText, flaggedPhrases } = scanResult;
     
-    const flaggedTexts = flaggedPhrases.map(phrase => phrase.text);
+  //   const flaggedTexts = flaggedPhrases.map(phrase => phrase.text);
     
-    const words = originalText.split(' ');
+  //   const words = originalText.split(' ');
     
-    return words.map((word, index) => {
-      const isWordFlagged = flaggedTexts.some(flagged => 
-        word.toLowerCase() === flagged.toLowerCase() ||
-        flagged.toLowerCase().includes(word.toLowerCase())
-      );
+  //   return words.map((word, index) => {
+  //     const isWordFlagged = flaggedTexts.some(flagged => 
+  //       word.toLowerCase() === flagged.toLowerCase() ||
+  //       flagged.toLowerCase().includes(word.toLowerCase())
+  //     );
       
-      const color = isWordFlagged ? "red" : "black";
+  //     const color = isWordFlagged ? "red" : "black";
       
-      return (
-        <ThemedText key={index} fontSize={16} font="Roboto" weight="Regular" color={color}>
-          {word}{index < words.length - 1 ? ' ' : ''}
-        </ThemedText>
-      );
-    });
-  };
+  //     return (
+  //       <ThemedText key={index} fontSize={16} font="Roboto" weight="Regular" color={color}>
+  //         {word}{index < words.length - 1 ? ' ' : ''}
+  //       </ThemedText>
+  //     );
+  //   });
+  // };
 
   const handleAIRefine = () => {
     // Refine text using AI logic here
@@ -83,46 +54,22 @@ export default function TextResultScreen() {
           <ThemedText fontSize={25} font="Montserrat" weight="Bold" color={Colors.colorPrimary} style={{ textAlign: "center" }}>
             Text Privacy Scan Result
           </ThemedText>
-          
-          {scanResult.hasRisks ? (
-            <ThemedText fontSize={18} weight="Regular" color="red" style={styles.subtitle}>
+          <ThemedText fontSize={18} weight="Regular" color="red" style={styles.subtitle}>
               Potential privacy risks detected.
             </ThemedText>
-          ) : (
-            <ThemedText fontSize={18} weight="Regular" color="green" style={styles.subtitle}>
-              No privacy risks detected. Your text appears safe to share.
-            </ThemedText>
-          )}
 
           <View style={styles.originalTextDisplay}>
             <View style={styles.textContent}>
-              {renderHighlightedText()}
+              <ThemedText>
+                {textResponse}
+              </ThemedText>
             </View>
           </View>
 
-          {scanResult.hasRisks && (
-            <View style={styles.risksContainer}>
-              <ThemedText fontSize={20} weight="Bold" color={Colors.colorPrimary} style={styles.risksTitle}>
-                Risks Detected:
-              </ThemedText>
-              
-              {scanResult.risks.map((risk, index) => (
-                <View key={index} style={styles.riskItem}>
-                  <ThemedText fontSize={16} weight="Bold" color="red">
-                    {risk.phrase}:
-                  </ThemedText>
-                  <ThemedText fontSize={14} weight="Regular" color="black" style={styles.riskDetail}>
-                    {risk.detail}
-                  </ThemedText>
-                </View>
-              ))}
-            </View>
-          )}
-
           <View style={styles.buttonContainer}>
-            <TextButton onPress={handleAIRefine} style={styles.refineButton}>
+            <TextButton onPress={()=>{router.push("./imageScanResult")}} style={styles.refineButton}>
               <ThemedText fontSize={16} weight="Bold" color="white">
-                Let AI Refine Your Text
+                View Image Result
               </ThemedText>
             </TextButton>
 
@@ -189,12 +136,12 @@ const styles = StyleSheet.create({
   },
   refineButton: {
     alignSelf: 'center',
-    width: '70%',
+    width: '90%',
     paddingVertical: 16,
   },
   scanButton: {
     alignSelf: 'center',
-    width: '70%',
+    width: '90%',
     paddingVertical: 16,
     backgroundColor: "#669bbc",
   },

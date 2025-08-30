@@ -21,7 +21,7 @@ export default function TextUploadScreen() {
   const router = useRouter();
   const [textInput, setTextInput] = useState('');
 
-  const {detected} = useObjectDetectionContext();
+  const {detected, setTextResponse} = useObjectDetectionContext();
   const [skipped, setSkipped] = useState(false);
   const [textDetected, setTextDetected] = useState(false);
 
@@ -51,6 +51,8 @@ export default function TextUploadScreen() {
       const res = await TextFlagging(textInput);
       console.log("Text Flagging Result: ", res);
       setTextDetected(true);
+
+      setTextResponse(res);
     }
   };
 
@@ -71,9 +73,9 @@ export default function TextUploadScreen() {
     }
 
     if (!skipped && detected && textDetected) {
-      router.push("./imageScanResult")
+      router.push("./textScanResult")
     }
-  }, [skipped, detected])
+  }, [skipped, detected, textDetected])
 
 
 

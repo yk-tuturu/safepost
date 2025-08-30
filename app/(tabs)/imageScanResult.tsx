@@ -21,6 +21,7 @@ export default function ImageScanResult() {
 
   const { detected, ocrDetected, textResponse } = useObjectDetectionContext();
 
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -57,14 +58,7 @@ export default function ImageScanResult() {
               })
             }
           </View>
-          {textResponse ?
-            <TextButton onPress={() => { router.push("./textScanResult") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
-            <ThemedText color="#FFF" fontSize={18}>
-              View text scan result
-            </ThemedText>
-          </TextButton> : 
-          <>
-          <TextButton onPress={() => { router.push("./imageFiltered") }} style={{ alignSelf: "center", marginTop: 16, width: "100%" }}>
+           <TextButton onPress={() => { router.push("./imageFiltered") }} style={{ alignSelf: "center", marginTop: 16, width: "100%" }}>
             <ThemedText color="#FFF" fontSize={18}>
               Let AI refine your image!
             </ThemedText>
@@ -74,10 +68,6 @@ export default function ImageScanResult() {
               Scan Another Image
             </ThemedText>
           </TextButton>
-          </>
-          
-          }
-
         </ScrollView>
       </View>
     </SafeAreaView>
