@@ -84,12 +84,12 @@ export default function ImageScanResult() {
         </View>
         
         
-        <TextButton onPress={()=>{}} style={{alignSelf: "center", marginTop: 64}}>
+        <TextButton onPress={()=>{}} style={{alignSelf: "center", marginTop: 64, width: "80%"}}>
           <ThemedText color="#FFF" fontSize={18}>
             Let AI censor your image!
           </ThemedText>
         </TextButton>
-        <TextButton onPress={()=>{router.push("./imageUpload")}} style={{alignSelf: "center", marginTop: 16}}>
+        <TextButton onPress={()=>{router.push("./imageUpload")}} style={{alignSelf: "center", marginTop: 16, width: "80%"}}>
           <ThemedText color="#FFF" fontSize={18}>
             Scan another image
           </ThemedText>
