@@ -59,7 +59,6 @@ export default function ImageScanResult() {
           </View>
           {textResponse ?
             <TextButton onPress={() => { router.push("./textScanResult") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
-<<<<<<< HEAD
             <ThemedText color="#FFF" fontSize={18}>
               View text scan result
             </ThemedText>
@@ -77,25 +76,6 @@ export default function ImageScanResult() {
           </TextButton>
           </>
           
-=======
-              <ThemedText color="#FFF" fontSize={18}>
-                View text scan result
-              </ThemedText>
-            </TextButton> :
-            <>
-              <TextButton onPress={() => { router.push("./imageFiltered") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
-                <ThemedText color="#FFF" fontSize={18}>
-                  Let AI refine your image!
-                </ThemedText>
-              </TextButton>
-              <TextButton onPress={() => { router.push("./imageUpload") }} style={{ alignSelf: "center", marginTop: 16, width: "80%" }}>
-                <ThemedText color="#FFF" fontSize={18}>
-                  Scan Another Image
-                </ThemedText>
-              </TextButton>
-            </>
-
->>>>>>> e92a60a8f2235048f474052c45095e634b24fd68
           }
 
         </ScrollView>
