@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
+import {useState} from "react";
 
 import { HelloWave } from '@/components/template/HelloWave';
 import ParallaxScrollView from '@/components/template/ParallaxScrollView';
@@ -14,9 +15,17 @@ import {Divider} from "react-native-paper"
 import ButtonLight from '@/components/buttons/ButtonLight';
 import TextButton from '@/components/buttons/TextButton';
 
+import LoadingScreen from '@/components/LoadingScreen';
+
 
 export default function ImageUploadScreen() {
+  const [loading, setLoading] = useState(true);
   return (
+    <>
+    {loading ? 
+    <View style={{zIndex: 5, backgroundColor: "#f2f2f2", ...StyleSheet.absoluteFillObject}}>
+      <LoadingScreen></LoadingScreen>
+    </View> : <></>}
     <SafeAreaView>
         <View style={styles.container}>
           <ThemedText fontSize={32} font="Montserrat" weight="Bold" color={Colors.colorPrimary}>
@@ -45,13 +54,15 @@ export default function ImageUploadScreen() {
           
         </View>
     </SafeAreaView>
+    </>
+    
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 70,
-    paddingHorizontal: 20
+    paddingHorizontal: 24
   },
   uploadContainer: {
     borderRadius: 32,
