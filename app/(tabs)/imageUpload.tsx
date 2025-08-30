@@ -10,17 +10,18 @@ import { Alert } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
 import ButtonLight from '@/components/buttons/ButtonLight';
-import TextButton from '@/components/buttons/TextButton';
 import OutlineButton from '@/components/buttons/OutlineButton';
+import TextButton from '@/components/buttons/TextButton';
 import LoadingScreen from '@/components/LoadingScreen';
 
 import ResponsiveImage from '@/components/ResponsiveImage';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 
+import { useImage } from "../../context/ImageContext"
 import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
-import { useImage } from "../../context/ImageContext";
-import runObjectDetection from './ExecutorchTest';
+import runObjectDetection from '@/executorch/ObjectDetection';
+import ocr from '@/executorch/ocr';
 
 export default function ImageUploadScreen() {
   // const [loading, setLoading] = useState(false);
@@ -30,13 +31,13 @@ export default function ImageUploadScreen() {
   // const [error, setError] = useState<string>("");
 
   const { setImageUri, imageUri } = useImage();
-  const { detected, setDetected } = useObjectDetectionContext();
+  const { setDetected } = useObjectDetectionContext();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images', 'videos'],
-      quality: 1,
+      mediaTypes: ['images'],
+      quality: 0.95,
     });
 
     console.log(result);
@@ -51,6 +52,8 @@ export default function ImageUploadScreen() {
     if (imageUri) {
       // setLoading(true);
       const detected = await runObjectDetection(imageUri);
+      const test = await ocr(imageUri);
+      console.log("OCR Result: ", test);
       setDetected(detected);
       // setLoading(false);
       router.push("./textUpload");
@@ -74,9 +77,6 @@ export default function ImageUploadScreen() {
 
       <SafeAreaView>
         <View style={styles.container}>
-          {/* <TouchableOpacity onPress={()=>{router.push("./")}}>
-            <Image source={require("../../assets/images/close.png")} style={{width: 20, height: 20, marginBottom: 32}}/>
-          </TouchableOpacity> */}
           <OutlineButton onPress={()=>{router.back()}} style={{paddingVertical: 4, marginBottom: 10}}>
             <ThemedText color="#001847">
               Back

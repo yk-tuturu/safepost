@@ -20,7 +20,6 @@ export default function ImageScanResult() {
   const { imageUri } = useImage();
 
   const { detected } = useObjectDetectionContext();
-  console.log(detected);
 
   return (
     <SafeAreaView>
