@@ -7,7 +7,6 @@ import { ImageProvider } from '@/context/ImageContext';
 import { ObjectDetectionProvider } from '@/context/ObjectDetectionContext';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
 
   return (
     <ObjectDetectionProvider>
@@ -23,6 +22,5 @@ export default function TabLayout() {
         </Stack>
       </ImageProvider>
     </ObjectDetectionProvider>
-
   );
 }

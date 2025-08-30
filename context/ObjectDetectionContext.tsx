@@ -18,7 +18,7 @@ export const ObjectDetectionProvider = ({ children }: { children: ReactNode }) =
   );
 };
 
-export const useObjectDetection = () => {
+export const useObjectDetectionContext = () => {
   const context = useContext(ObjectDetectionContext);
   if (!context) {
     throw new Error("useObjectdetection must be used inside ObjectDetectionProvider");
