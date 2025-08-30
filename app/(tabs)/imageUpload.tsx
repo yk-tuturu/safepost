@@ -17,15 +17,18 @@ import TextButton from '@/components/buttons/TextButton';
 
 import LoadingScreen from '@/components/LoadingScreen';
 
+import { useRouter } from 'expo-router';
 
 export default function ImageUploadScreen() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   return (
     <>
     {loading ? 
     <View style={{zIndex: 5, backgroundColor: "#f2f2f2", ...StyleSheet.absoluteFillObject}}>
       <LoadingScreen></LoadingScreen>
     </View> : <></>}
+
     <SafeAreaView>
         <View style={styles.container}>
           <ThemedText fontSize={32} font="Montserrat" weight="Bold" color={Colors.colorPrimary}>
@@ -46,7 +49,7 @@ export default function ImageUploadScreen() {
               Open Camera and Take Photo</ThemedText>
           </ButtonLight>
 
-          <TextButton onPress={()=>{}} style={{marginTop: 100, alignSelf: "center", paddingVertical: 12, paddingHorizontal: 24}}>
+          <TextButton onPress={()=>{setLoading(true)}} style={{marginTop: 100, alignSelf: "center", paddingVertical: 12, paddingHorizontal: 24}}>
             <ThemedText color="#FFF" fontSize={18}>
               Proceed to Scan
             </ThemedText>
