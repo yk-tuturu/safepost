@@ -20,15 +20,16 @@ import ResponsiveImage from '@/components/ResponsiveImage';
 import { useImage } from "../../context/ImageContext"
 import runObjectDetection from './ExecutorchTest';
 import { Detection } from 'react-native-executorch';
+import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
 
 export default function ImageUploadScreen() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const [image, setImage] = useState<string | null>(null);
-  const [result, setResult] = useState<Detection[]>([]);
 
   const { setImageUri, imageUri } = useImage();
+  const { detected, setDetected } = useObjectDetectionContext();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -42,14 +43,15 @@ export default function ImageUploadScreen() {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
       setImageUri(result.assets[0].uri);
-      await runObjectDetection((result.assets[0].uri) as string).then(detections => setResult(detections));
     }
   };
 
   const proceed = async () => {
     if (imageUri && !loading) {
       setLoading(true);
-      await runObjectDetection(imageUri);
+      const detected = await runObjectDetection(imageUri);
+      setDetected(detected);
+      setLoading(false);
       router.push("./imageScanResult");
     }
   }
@@ -105,9 +107,6 @@ export default function ImageUploadScreen() {
           <TextButton onPress={proceed} style={{ marginTop: 100, alignSelf: "center", paddingVertical: 12, paddingHorizontal: 24 }}>
             <ThemedText color="#FFF" fontSize={18}>
               Proceed to Scan
-            </ThemedText>
-            <ThemedText>
-              {result.map(item => `${item.label} (${(item.score * 100).toFixed(1)}%)`).join(", ")}
             </ThemedText>
           </TextButton>
 
