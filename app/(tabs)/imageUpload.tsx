@@ -5,12 +5,13 @@ import { Pressable, StyleSheet } from 'react-native';
 import ThemedText from '@/components/ui/ThemedText';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Alert } from 'react-native';
 
 import { Colors } from '@/constants/Colors';
 
 import ButtonLight from '@/components/buttons/ButtonLight';
 import TextButton from '@/components/buttons/TextButton';
-
+import OutlineButton from '@/components/buttons/OutlineButton';
 import LoadingScreen from '@/components/LoadingScreen';
 
 import ResponsiveImage from '@/components/ResponsiveImage';
@@ -22,11 +23,11 @@ import { useImage } from "../../context/ImageContext";
 import runObjectDetection from './ExecutorchTest';
 
 export default function ImageUploadScreen() {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const [image, setImage] = useState<string | null>(null);
-  const [error, setError] = useState<string>("");
+  // const [error, setError] = useState<string>("");
 
   const { setImageUri, imageUri } = useImage();
   const { detected, setDetected } = useObjectDetectionContext();
@@ -47,14 +48,14 @@ export default function ImageUploadScreen() {
   };
 
   const proceed = async () => {
-    if (imageUri && !loading) {
-      setLoading(true);
+    if (imageUri) {
+      // setLoading(true);
       const detected = await runObjectDetection(imageUri);
       setDetected(detected);
-      setLoading(false);
-      router.push("./imageScanResult");
+      // setLoading(false);
+      router.push("./textUpload");
     } else {
-      setError("Upload an image first!");
+      Alert.alert('Please select an image to scan');
     }
   }
 
@@ -66,17 +67,17 @@ export default function ImageUploadScreen() {
 
   return (
     <>
-      {loading ?
+      {/* {loading ?
         <View style={{ zIndex: 5, backgroundColor: "#f2f2f2", ...StyleSheet.absoluteFillObject }}>
           <LoadingScreen></LoadingScreen>
-        </View> : <></>}
+        </View> : <></>} */}
 
       <SafeAreaView>
         <View style={styles.container}>
           {/* <TouchableOpacity onPress={()=>{router.push("./")}}>
             <Image source={require("../../assets/images/close.png")} style={{width: 20, height: 20, marginBottom: 32}}/>
           </TouchableOpacity> */}
-          <OutlineButton onPress={()=>{router.push("./")}} style={{paddingVertical: 4, marginBottom: 32}}>
+          <OutlineButton onPress={()=>{router.back()}} style={{paddingVertical: 4, marginBottom: 10}}>
             <ThemedText color="#001847">
               Back
             </ThemedText>
@@ -116,7 +117,7 @@ export default function ImageUploadScreen() {
 
           <TextButton onPress={proceed} style={{ marginTop: 100, alignSelf: "center", paddingVertical: 12, paddingHorizontal: 24 }}>
             <ThemedText color="#FFF" fontSize={18}>
-              Proceed to Scan
+              Proceed to Scan Text
             </ThemedText>
           </TextButton>
 
@@ -145,17 +146,18 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   divider: {
-    width: "100%",
+    alignSelf: "center",
+    width: "80%",
     borderBottomWidth: 1,
-    borderColor: Colors.colorText,
-    marginTop: 32
+    borderColor: "grey",
+    opacity: 0.5,
+    marginTop: 40
 
   },
   dividerText: {
     position: "absolute",
-    left: "50%",
-    bottom: 0,
-    transform: [{ translateX: "-50%" }, { translateY: "50%" }],
+    alignSelf: "center",
+    bottom: 10,
     backgroundColor: "#f2f2f2",
     paddingHorizontal: 16
   }

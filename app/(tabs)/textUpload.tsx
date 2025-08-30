@@ -11,6 +11,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 
 import { Colors } from '@/constants/Colors';
 import TextButton from '@/components/buttons/TextButton';
+import OutlineButton from '@/components/buttons/OutlineButton';
 
 export default function TextUploadScreen() {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +41,7 @@ export default function TextUploadScreen() {
     if (!isLoading) {
       setIsLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1000));
-      router.push('./textScanResult');
+      router.push('./imageScanResult');
       setIsLoading(false);
     }
   };
@@ -53,6 +54,11 @@ export default function TextUploadScreen() {
         </View> : <></>}
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
+          <OutlineButton onPress={()=>{router.back()}} style={{paddingVertical: 4}}>
+            <ThemedText color="#001847">
+              Back
+            </ThemedText>
+          </OutlineButton>
           <ThemedText fontSize={32} font="Montserrat" weight="Bold" color={Colors.colorPrimary}>
             Scan Your Text
           </ThemedText>

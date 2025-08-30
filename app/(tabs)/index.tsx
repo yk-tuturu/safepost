@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import ThemedText from '@/components/ui/ThemedText';
+import { Image } from 'expo-image';
 
 import ButtonLight from '@/components/buttons/ButtonLight';
 
@@ -14,16 +15,21 @@ export default function HomeScreen() {
   return (
     <View style={styles.safeArea}>
       <LinearGradient colors={['#0172B2', '#001645']} style={styles.gradient}>
-        <ThemedText color='white' font='Lobster' fontSize={45} weight='Regular' style={styles.appHeader}>Safe Post</ThemedText>
-        <ThemedText color='white' font='Roboto' fontSize={20} weight='Regular' style={styles.appSlogan}>Share Freely. Post Safely.</ThemedText>
-        <ButtonLight onPress={() => router.push('./textUpload')} style={styles.buttonStyle}>
-          <ThemedText color='#011848' font='Roboto' fontSize={20} weight='Regular'>Scan Text</ThemedText>
-          <ThemedText color='#484242' font='Roboto' fontSize={15} weight='Regular' style={styles.scanDetail}>Check your captions and text for any sensitive or private information.</ThemedText>
-        </ButtonLight>
+        <Image
+          source={require("../../assets/icons/icon.png")}
+          style={{width: 150, height: 150, alignSelf: "center", marginTop: "15%"}}
+        />
+        <ThemedText color='white' font='Lobster' fontSize={50} weight='Regular' style={styles.appHeader}>Safe Post</ThemedText>
+        <ThemedText color='white' font='Roboto' fontSize={20} weight='Bold' style={styles.appSlogan}>Share Freely. Post Safely.</ThemedText>
+        <ThemedText color='white' font='Roboto' fontSize={14} weight='Light' style={styles.appDescription}>Protect your privacy before you post.</ThemedText>
+        <ThemedText color='white' font='Roboto' fontSize={14} weight='Light' style={styles.appDescription}>Scan your images and captions with AI to detect privacy risks before you share.</ThemedText>
         <ButtonLight onPress={() => router.push('./imageUpload')} style={styles.buttonStyle}>
-          <ThemedText color='#011848' font='Roboto' fontSize={20} weight='Regular'>Scan Image</ThemedText>
-          <ThemedText color='#484242' font='Roboto' fontSize={15} weight='Regular' style={styles.scanDetail}>Detect faces, documents, and private details in your photos.</ThemedText>
+          <ThemedText color='#011848' font='Montserrat' fontSize={20} weight='Bold'>START SCANNING</ThemedText>
         </ButtonLight>
+        <Image
+          source={require("../../assets/icons/coverPage.png")}
+          style={{width: 340, height: 350, alignSelf: "center", marginTop: 50, marginRight: 70}}
+        />
       </LinearGradient>
     </View>
   );
@@ -38,11 +44,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   appHeader: {
-    marginTop: '35%',
     textAlign: 'center',
+    marginBottom: 5,
   },
   appSlogan: {
     textAlign: 'center',
+  },
+  appDescription: {
+    textAlign: 'center',
+    marginTop: 3,
   },
   scanDetail: {
     textAlign: 'center',
