@@ -18,10 +18,10 @@ import ResponsiveImage from '@/components/ResponsiveImage';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 
-import { useImage } from "../../context/ImageContext"
 import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
 import runObjectDetection from '@/executorch/ObjectDetection';
 import ocr from '@/executorch/ocr';
+import { useImage } from "../../context/ImageContext";
 
 export default function ImageUploadScreen() {
   const [loading, setLoading] = useState(false);
@@ -30,21 +30,21 @@ export default function ImageUploadScreen() {
   const [image, setImage] = useState<string | null>(null);
   const [error, setError] = useState<string>("");
 
-  const { setImageUri, imageUri } = useImage();
+  const { addImage, clearData, imageUri } = useImage();
   const { setDetected } = useObjectDetectionContext();
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      quality: 0.95,
+      quality: 0.5,
     });
 
     console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      setImageUri(result.assets[0].uri);
+      addImage(result.assets[0]);
     }
   };
 
@@ -64,7 +64,7 @@ export default function ImageUploadScreen() {
 
   // clear off images from prev sessions
   useEffect(() => {
-    setImageUri("");
+    clearData();
   }, [])
 
 

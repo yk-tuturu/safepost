@@ -8,7 +8,7 @@ import ResponsiveImage from '@/components/ResponsiveImage';
 import { Colors } from '@/constants/Colors';
 
 import { useImage } from '@/context/ImageContext';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Checkbox } from 'react-native-paper';
 
 import { useRouter } from 'expo-router';
@@ -17,6 +17,10 @@ import TextButton from '@/components/buttons/TextButton';
 import { useObjectDetectionContext } from '@/context/ObjectDetectionContext';
 import { Rect, Svg } from 'react-native-svg';
 
+import * as MediaLibrary from 'expo-media-library';
+import type { LayoutChangeEvent } from 'react-native';
+import ViewShot from 'react-native-view-shot';
+
 
 type Flag = {
   key: string,
@@ -24,39 +28,57 @@ type Flag = {
   checked: boolean
 }
 
-export default function ImageFiltered() {
-  const {imageUri} = useImage();
+type Size = {
+  width: number,
+  height: number
+}
 
-  const [flags, setFlags] = useState<Flag[]>([])
+export default function ImageFiltered() {
+  const {imageUri, width, height} = useImage();
+
+  const [flags, setFlags] = useState<Flag[]>([]);
+  const [renderedSize, setRenderedSize] = useState<Size>({
+    width: 1,
+    height: 1
+  })
+
+  const viewRef = useRef<View|null>(null);
+  const viewShotRef = useRef<ViewShot>(null);
 
   const { detected } = useObjectDetectionContext();
   console.log(detected);
 
   useEffect(()=> {
+    console.log(imageUri)
+    console.log(width)
+    console.log(height)
+  }, [imageUri, width, height])
 
-  }, [])
+  
+  const saveImage = useCallback(async () => {
+    if (!imageUri || !viewShotRef.current || !viewShotRef.current.capture) return;
 
-  // const saveImage = async () => {
-  //   if (!image) return;
+    try {
+      var uri = "";
+      
+      viewShotRef.current.capture().then((my_uri:string) => {
+        console.log("do something with ", my_uri);
+        uri = my_uri;
+      });
 
-  //   try {
-  //     const uri = await captureRef(viewRef, {
-  //       format: 'png',
-  //       quality: 1,
-  //     });
-
-  //     const { status } = await MediaLibrary.requestPermissionsAsync();
-  //     if (status === 'granted') {
-  //       await MediaLibrary.saveToLibraryAsync(uri);
-  //       Alert.alert('Success', 'Saved to gallery!');
-  //     } else {
-  //       Alert.alert('Error', 'Permission denied');
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     Alert.alert('Error', 'Something went wrong.');
-  //   }
-  // };
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status === 'granted') {
+        console.log("1")
+        console.log(uri)
+        await MediaLibrary.saveToLibraryAsync(uri);
+        console.log("saved to gallery")
+      } else {
+        console.log("permission denied")
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
 
   const router = useRouter();
 
@@ -73,30 +95,12 @@ export default function ImageFiltered() {
           <ThemedText weight="SemiBold" fontSize={18} style={{marginTop: 32, alignSelf: "center"}}>
             Original Image
           </ThemedText>
-          {imageUri && <View>
-              <ResponsiveImage 
-                  source={{uri: imageUri}} 
-                  maxHeight={350}
-                  style={{marginTop: 16}}>
-            </ResponsiveImage>
-            <Svg style={StyleSheet.absoluteFill}>
-              {
-                detected.map((flag, index) => {
-                  return <Rect
-                    key={index}
-                    x={flag.bbox.x1}
-                    y={flag.bbox.y1}
-                    width={flag.bbox.x2 - flag.bbox.x1}
-                    height={flag.bbox.y2 - flag.bbox.y1}
-                    stroke="red"
-                    strokeWidth={3}
-                    fill="transparent"
-                  />
-                })
-              }
-              
-            </Svg>
-          </View>
+          {imageUri && 
+          <ResponsiveImage 
+                source={{uri: imageUri}} 
+                maxHeight={350}
+                style={{marginTop: 16}}>
+          </ResponsiveImage>
           }
           <View style={styles.flagWrapper}>
             {
@@ -122,12 +126,37 @@ export default function ImageFiltered() {
           <ThemedText weight="SemiBold" fontSize={18} style={{marginTop: 32, alignSelf: "center"}}>
             Processed Image
           </ThemedText>
-          {imageUri && <ResponsiveImage 
-                source={{uri: imageUri}} 
-                maxHeight={350}
-                style={{marginTop: 16}}>
-          </ResponsiveImage>}
-          <TextButton onPress={()=>{}} style={{marginTop: 48, alignSelf: "center"}}>
+          {imageUri && 
+          <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 0.9 }}>
+              <View style={{alignSelf: "center", marginTop: 16}}>
+              <ResponsiveImage 
+                  source={{uri: imageUri}} 
+                  maxHeight={350}
+                  onLayout={(e: LayoutChangeEvent)=>{
+                    setRenderedSize({
+                      width: e.nativeEvent.layout.width, 
+                      height: e.nativeEvent.layout.height})
+                  }}>
+            </ResponsiveImage>
+            <Svg style={StyleSheet.absoluteFill}>
+              {
+                detected.map((flag, index) => {
+                  return <Rect
+                    key={index}
+                    x={flag.bbox.x1 / width * renderedSize.width}
+                    y={flag.bbox.y1 / height * renderedSize.height}
+                    width={(flag.bbox.x2 - flag.bbox.x1) / width * renderedSize.width}
+                    height={(flag.bbox.y2 - flag.bbox.y1) / height * renderedSize.height}
+                    fill="black"
+                  />
+                })
+              }
+              
+            </Svg>
+          </View>
+          </ViewShot>
+          }
+          <TextButton onPress={saveImage} style={{marginTop: 48, alignSelf: "center"}}>
             <ThemedText color="#FFF">
               Save to Gallery
             </ThemedText>

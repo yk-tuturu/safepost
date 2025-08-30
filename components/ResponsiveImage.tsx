@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Image, Dimensions, StyleProp, ImageStyle } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Dimensions, Image, ImageStyle, LayoutChangeEvent, StyleProp } from "react-native";
 
 type ResponsiveImageProps = {
   source: { uri: string } | number; // supports remote URI or local require()
   style?: StyleProp<ImageStyle>;
   maxWidth?: number; // optional, defaults to screen width
   maxHeight?: number;
+  onLayout?: (e: LayoutChangeEvent)=>void
 };
 
-const ResponsiveImage: React.FC<ResponsiveImageProps> = ({ source, style, maxWidth, maxHeight = 500 }) => {
+const ResponsiveImage: React.FC<ResponsiveImageProps> = ({ source, style, maxWidth, maxHeight = 500, onLayout }) => {
   const [aspectRatio, setAspectRatio] = useState<number>(1);
 
   const screenWidth = Dimensions.get("window").width - 48;
@@ -40,6 +41,7 @@ const ResponsiveImage: React.FC<ResponsiveImageProps> = ({ source, style, maxWid
         },
         style,
       ]}
+      onLayout={onLayout}
     />
   );
 };
